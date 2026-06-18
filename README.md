@@ -5,12 +5,6 @@ Build the foundational network infrastructure for a cybersecurity and SecurityX 
 
 ## Environment
 
-### Host System
-- AMD Ryzen 7 5800XT
-- 32 GB RAM
-- Windows 11
-- Oracle VirtualBox 7.2.10
-
 ### Virtual Machine
 - OPNsense 26.1.6
 - FreeBSD 64-bit
