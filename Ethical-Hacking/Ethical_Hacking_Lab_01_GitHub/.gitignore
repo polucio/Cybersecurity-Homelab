@@ -1,0 +1,25 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# VM files - do not upload VM disks to GitHub
+*.vdi
+*.vmdk
+*.vhd
+*.ova
+*.iso
+*.qcow2
+*.nvram
+*.vmsd
+*.vmx
+*.vmxf
+
+# Captures and logs that may contain sensitive info
+*.pcap
+*.pcapng
+*.log
+
+# Secrets
+*.key
+*.pem
+.env
