@@ -37,8 +37,6 @@ The objective of this project is to recreate and expand the book's cybersecurity
 
 ## Lab Adaptation
 
-This lab was completed as part of a structured ethical hacking home lab based on a modern adaptation of the *Ethical Hacking* book environment.
-
 The original lab design used pfSense as the perimeter firewall. Due to changes in the pfSense distribution and installation process since the book was published, OPNsense 26.1.6 was selected as a modern equivalent firewall platform.
 
 OPNsense provides comparable functionality for:
