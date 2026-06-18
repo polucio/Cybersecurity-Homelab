@@ -4,6 +4,15 @@
 
 Build the foundational network infrastructure for a cybersecurity and SecurityX (CAS-005) home lab environment using VirtualBox and OPNsense.
 
+## Source Material
+
+This lab is based on the virtual lab architecture presented in:
+
+*Ethical Hacking: A Hands-on Introduction to Breaking In* by Daniel G. Graham.
+
+The original lab environment utilizes pfSense as the perimeter firewall. OPNsense 26.1.6 was selected as a modern equivalent due to changes in the pfSense distribution and installation process since publication.
+
+The objective of this project is to recreate and expand the book's cybersecurity lab environment using current technologies and industry practices.
 ## Environment
 
 ### Virtualization Platform
