@@ -16,12 +16,6 @@ The program 'arpspoof' is currently not installed.
 
 Run `arpspoof` from Kali, not Metasploitable.
 
-```text
-Kali = attacker; runs arpspoof
-Metasploitable = victim; generates traffic
-OPNsense = gateway
-```
-
 ## Issue: arpspoof Permission Error
 
 ### Symptom
@@ -32,12 +26,7 @@ arpspoof: libnet_open_link(): UID/EUID 0 or capability CAP_NET_RAW required
 
 ### Fix
 
-Run with `sudo`:
-
-```bash
-sudo arpspoof -i eth0 -t 192.168.1.121 192.168.1.1
-sudo arpspoof -i eth0 -t 192.168.1.1 192.168.1.121
-```
+Run with `sudo`.
 
 ## Issue: urlsnarf Permission Error
 
@@ -86,8 +75,6 @@ Location: https://192.168.1.1/
 
 This was not a failure. The initial HTTP request worked and then the gateway redirected the client to HTTPS.
 
-The lab only needed the initial unencrypted HTTP request.
-
 ## Issue: Old TLS / SSL Failure on Metasploitable
 
 ### Symptom
@@ -121,27 +108,56 @@ Use:
 wget http://192.168.1.1
 ```
 
-## Issue: urlsnarf Did Not Show Output
+## Issue: urlsnarf Did Not Show Output at First
 
 ### Symptom
 
-`urlsnarf` entered listening mode but did not display the expected book output.
+`urlsnarf` entered listening mode but initially did not display the expected book output.
 
 ### Workaround
 
-Use `tcpdump` to verify traffic visibility:
+Use `tcpdump` to verify traffic visibility.
 
-```bash
-sudo tcpdump -i eth0 host 192.168.1.121 and port 80
-```
+## Issue: Scapy ARP Warning
 
-Confirmed traffic:
+### Symptom
 
 ```text
-192.168.1.121 > OPNsense.internal.http
-HTTP: GET / HTTP/1.0
+WARNING: You should be providing the Ethernet destination MAC address when sending an is-at ARP.
+```
+
+### Cause
+
+The first Python script used `send()` with only an ARP packet.
+
+### Fix
+
+Use an Ethernet frame with `sendp()`.
+
+## Issue: tcpdump MAC Flooding Filter Error
+
+### Symptom
+
+```text
+tcpdump: link layer applied in wrong context
+```
+
+### Cause
+
+The command used an invalid filter:
+
+```bash
+sudo tcpdump -i eth0 ether
+```
+
+### Fix
+
+Use:
+
+```bash
+sudo tcpdump -i eth0 -e -n
 ```
 
 ## Lesson
 
-Tool output may differ from the book due to software versions, redirects, TLS behavior, or lab differences. Validation can still be completed by confirming the underlying network traffic with a lower-level tool like `tcpdump`.
+Tool output may differ from the book due to software versions, redirects, TLS behavior, Scapy behavior, or lab differences. Validation can still be completed by confirming the underlying network traffic with lower-level tools like `tcpdump`.

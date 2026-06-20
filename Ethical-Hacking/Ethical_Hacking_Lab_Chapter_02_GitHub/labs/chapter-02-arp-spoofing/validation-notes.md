@@ -24,25 +24,11 @@ Output:
 1
 ```
 
-## ARP Spoofing
+## Manual ARP Spoofing
 
-Two `arpspoof` sessions were run from Kali.
+Two `arpspoof` sessions were run from Kali and showed repeated ARP replies, indicating that spoofed ARP replies were being sent continuously.
 
-Session 1:
-
-```bash
-sudo arpspoof -i eth0 -t 192.168.1.121 192.168.1.1
-```
-
-Session 2:
-
-```bash
-sudo arpspoof -i eth0 -t 192.168.1.1 192.168.1.121
-```
-
-Both sessions displayed repeated ARP replies, indicating that spoofed ARP replies were being sent continuously.
-
-## urlsnarf
+## urlsnarf Validation
 
 `urlsnarf` was started with root privileges:
 
@@ -50,33 +36,15 @@ Both sessions displayed repeated ARP replies, indicating that spoofed ARP replie
 sudo urlsnarf -i eth0
 ```
 
-It entered listening mode:
+Captured evidence:
 
 ```text
-urlsnarf: listening on eth0 [tcp port 80 or port 8080 or port 3128]
-```
-
-However, it did not display the expected captured URL output shown in the book.
-
-## HTTP Traffic Generation
-
-From Metasploitable:
-
-```bash
-wget http://192.168.1.1
-```
-
-Metasploitable successfully connected to OPNsense on port 80:
-
-```text
-Connecting to 192.168.1.1:80... connected.
-HTTP request sent, awaiting response... 301 Moved Permanently
-Location: https://192.168.1.1/
+192.168.1.121 - - [20/Jun/2026:13:59:51 -0400] "GET http://192.168.1.1/ HTTP/1.0" - - "-" "Wget/1.10.2"
 ```
 
 ## tcpdump Validation
 
-Because `urlsnarf` did not show the expected output, `tcpdump` was used to confirm visibility:
+`tcpdump` was used to confirm traffic visibility:
 
 ```bash
 sudo tcpdump -i eth0 host 192.168.1.121 and port 80
@@ -85,12 +53,78 @@ sudo tcpdump -i eth0 host 192.168.1.121 and port 80
 Captured evidence included:
 
 ```text
-192.168.1.121.58833 > OPNsense.internal.http
+192.168.1.121.34993 > OPNsense.internal.http
 HTTP: GET / HTTP/1.0
+```
+
+## Python Scapy Spoofer Validation
+
+The Python Scapy ARP spoofer was run from Kali:
+
+```bash
+sudo python3 arp_spoofer.py
+```
+
+The script started successfully without warnings:
+
+```text
+[*] Starting ARP spoofing.
+[*] Victim:  192.168.1.121
+[*] Gateway: 192.168.1.1
+[*] Press Ctrl+C to stop.
+```
+
+On Metasploitable, the ARP table showed the gateway IP mapped to Kali's MAC address:
+
+```text
+OPNsense.internal (192.168.1.1) at 08:00:27:8A:35:D2 [ether] on eth0
+? (192.168.1.188) at 08:00:27:8A:35:D2 [ether] on eth0
+```
+
+This confirmed that the Python ARP spoofer successfully poisoned the victim's ARP table.
+
+## ARP Detector Validation
+
+The defensive ARP detection script successfully identified suspicious ARP behavior.
+
+Example alert:
+
+```text
+[!] Possible ARP spoofing detected!
+Time:        2026-06-20 14:14:43
+IP address:  192.168.1.1
+Old MAC:     08:00:27:8a:35:d2
+New MAC:     08:00:27:a0:7f:ae
+```
+
+The detector also saw mappings flip back and forth, which demonstrated that the same IP address was being associated with different MAC addresses.
+
+## MAC Flooding Validation
+
+A limited MAC flooding test was run with `macof`:
+
+```bash
+sudo macof -i eth0 -n 50
+```
+
+`tcpdump` captured the generated Layer 2 traffic:
+
+```text
+492 packets captured
+492 packets received by filter
+0 packets dropped by kernel
 ```
 
 ## Result
 
-The ARP spoofing/on-path setup was validated successfully.
+Chapter 2 was completed successfully.
 
-Even though `urlsnarf` did not display the book-style output, `tcpdump` confirmed that Kali could observe HTTP traffic between Metasploitable and the gateway.
+The lab validated:
+
+- Manual ARP spoofing
+- Traffic capture
+- ARP table poisoning
+- Python ARP spoofing with Scapy
+- Python ARP spoof detection
+- MAC flooding behavior
+- Defensive lessons for Layer 2 attacks

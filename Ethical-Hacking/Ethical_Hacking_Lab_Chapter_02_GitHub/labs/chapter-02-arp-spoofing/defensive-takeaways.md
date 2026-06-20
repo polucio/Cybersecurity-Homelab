@@ -2,9 +2,11 @@
 
 ## Main Lesson
 
-ARP spoofing can allow an attacker on the same local network to position themselves between a victim and a gateway.
+Layer 2 attacks can allow an attacker on the same local network to observe or disrupt traffic.
 
-Once on-path, the attacker may be able to observe or manipulate unencrypted traffic.
+ARP spoofing can place an attacker on-path between a victim and gateway.
+
+MAC flooding can create noisy Layer 2 traffic and may affect switching behavior depending on the environment.
 
 ## Why HTTP Was Visible
 
@@ -43,6 +45,8 @@ Possible defenses include:
 - Monitor for duplicate or suspicious ARP replies.
 - Avoid placing untrusted systems on the same local network as sensitive devices.
 - Keep systems updated and remove unnecessary services.
+- Use switch port security where appropriate.
+- Alert on unusual volumes of new source MAC addresses.
 
 ## SecurityX-Style Summary
 
@@ -50,6 +54,7 @@ Possible defenses include:
 |---|---|
 | Attack Type | On-path / man-in-the-middle |
 | Technique | ARP spoofing / ARP poisoning |
+| Related Layer 2 Attack | MAC flooding |
 | Weakness | ARP lacks built-in authentication |
-| Impact | Traffic interception or manipulation |
+| Impact | Traffic interception, manipulation, or disruption |
 | Best Protection | Encryption, segmentation, switch protections, monitoring |
