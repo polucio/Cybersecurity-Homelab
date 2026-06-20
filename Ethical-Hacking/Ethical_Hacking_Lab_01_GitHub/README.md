@@ -11,8 +11,11 @@ The original book lab uses pfSense as the firewall/router. This implementation u
 - Kali Linux imported from the VirtualBox image
 - Metasploitable 2 imported using the existing VMDK disk
 - Ubuntu Desktop installed for later lab chapters
-- Kali successfully discovered OPNsense and Metasploitable on the internal LAN
+- Kali successfully discovered OPNsense, Metasploitable, and Ubuntu on the internal LAN
 - Metasploitable web service loaded from Kali
+- Chapter 1 first hack completed successfully
+- Root shell obtained on Metasploitable through the vsFTPd 2.3.4 backdoor
+- Reboot test confirmed command execution on the target VM
 
 ## Lab Safety
 
@@ -29,7 +32,10 @@ labs/
     vm-inventory.md
     network-diagram.md
     validation-notes.md
+    first-hack.md
     troubleshooting.md
+    evidence/
+      README.md
 docs/
   safety-scope.md
 ```

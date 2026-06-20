@@ -2,7 +2,7 @@
 
 ## Objective
 
-Build the foundational virtual lab environment for the Ethical Hacking book using VirtualBox and OPNsense.
+Build the foundational virtual lab environment for the Ethical Hacking book using VirtualBox and OPNsense, then complete the first controlled exploit against Metasploitable 2.
 
 ## Source Material
 
@@ -12,30 +12,16 @@ Based on Chapter 1, "Setting Up," from:
 Daniel G. Graham  
 No Starch Press
 
-## Lab Design
+## Implementation Notes
 
-The book's lab uses five virtual machines:
-
-1. Firewall/router
-2. Kali Linux
-3. Metasploitable
-4. Ubuntu Desktop
-5. A second Ubuntu Desktop for later private-network work
-
-For this implementation:
-
-- OPNsense replaces pfSense.
-- Metasploitable 2 is used as the vulnerable Linux server.
-- Kali is used as the attacker/testing machine.
-- Ubuntu Desktop is installed but parked until later chapters.
-- The second Ubuntu/private-network VM is deferred until Chapter 14.
+The book uses pfSense as the firewall/router. This lab uses OPNsense as a modern equivalent because pfSense setup and distribution have changed since the book was published, while OPNsense preserves the same basic architecture for this lab.
 
 ## Current Chapter 1 VM Status
 
 | VM | Status |
 |---|---|
 | OPNsense | Installed and running |
-| Metasploitable 2 | Installed and reachable |
+| Metasploitable 2 | Installed, reachable, and exploited in the lab |
 | Kali Linux | Installed and reachable |
 | Ubuntu Desktop | Installed for later use |
 
@@ -56,11 +42,12 @@ For this implementation:
 | OPNsense LAN gateway | 192.168.1.1 |
 | Kali Linux | 192.168.1.188 |
 | Metasploitable 2 | 192.168.1.121 |
+| Ubuntu Desktop | 192.168.1.165 |
 
 These IP addresses are DHCP-assigned and may change after reboot unless static DHCP leases are configured later.
 
-## Important Notes
+## Chapter 1 Outcome
 
-- Only OPNsense uses Bridged Adapter.
-- Kali, Metasploitable, and Ubuntu stay on the internal LAN.
-- Metasploitable must not be exposed directly to the home network or internet.
+The first exploit was completed successfully.
+
+Kali connected to the vulnerable vsFTPd 2.3.4 service on Metasploitable, triggered the backdoor behavior, connected to the shell on port 6200, confirmed root access with `whoami`, and rebooted the Metasploitable VM to prove command execution.

@@ -5,7 +5,6 @@
 ```text
                  Home Network / Internet
                          |
-                         |
               [OPNsense Adapter 1]
                 Bridged Adapter / WAN
                          |
@@ -17,7 +16,7 @@
         ------------------------------------------------
         |                       |                      |
       Kali                Metasploitable             Ubuntu
-  192.168.1.188           192.168.1.121          DHCP / later use
+  192.168.1.188           192.168.1.121          192.168.1.165
 ```
 
 ## Security Boundary

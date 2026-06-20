@@ -25,6 +25,8 @@
 | Confirmed IP | 192.168.1.121 |
 | Default Username | msfadmin |
 | Default Password | msfadmin |
+| Confirmed Service | vsFTPd 2.3.4 on port 21 |
+| First Hack Result | Root shell obtained through backdoor on port 6200 |
 
 ## Kali Linux
 
@@ -36,6 +38,7 @@
 | Confirmed IP | 192.168.1.188 |
 | Default Username | kali |
 | Default Password | kali |
+| Tools Used | netdiscover, nc |
 
 ## Ubuntu Desktop
 
@@ -44,6 +47,7 @@
 | Purpose | Desktop VM for later chapters |
 | Install Media | Ubuntu Disc Image File / ISO |
 | Network | Internal Network: Internal LAN |
+| Confirmed IP | 192.168.1.165 |
 | Active Directory | Not used |
 | Partitioning | Erase disk and install Ubuntu, virtual disk only |
 | Notes | Parked after install until later chapters |

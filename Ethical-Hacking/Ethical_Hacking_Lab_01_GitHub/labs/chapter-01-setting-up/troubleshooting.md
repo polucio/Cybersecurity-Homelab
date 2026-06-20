@@ -61,6 +61,28 @@ LAN = em1
 
 VLANs were not used.
 
+## Issue: OPNsense Interfaces Were Reversed
+
+### Symptom
+
+OPNsense showed LAN on the wrong interface, causing Kali to lose DHCP.
+
+### Fix
+
+Reassigned interfaces:
+
+```text
+WAN = em0
+LAN = em1
+```
+
+Final correct state:
+
+```text
+LAN (em1) -> 192.168.1.1/24
+WAN (em0) -> DHCP address
+```
+
 ## Issue: Kali Had No IPv4 Address
 
 ### Symptom
@@ -75,6 +97,48 @@ Used NetworkManager:
 nmcli device status
 sudo nmcli device connect eth0
 ip addr
+```
+
+## Issue: dhclient Not Installed on Kali
+
+### Symptom
+
+```text
+sudo: dhclient: command not found
+```
+
+### Fix
+
+Used NetworkManager instead:
+
+```bash
+sudo nmcli device connect eth0
+```
+
+## Issue: netdiscover Was Run on Metasploitable
+
+### Symptom
+
+```text
+sudo: netdiscover: command not found
+```
+
+### Cause
+
+`netdiscover` was run from Metasploitable instead of Kali.
+
+### Fix
+
+Run discovery tools from Kali:
+
+```bash
+sudo netdiscover -i eth0 -r 192.168.1.0/24
+```
+
+Use Metasploitable only to check its own IP if needed:
+
+```bash
+ifconfig eth0
 ```
 
 ## Issue: Ubuntu vmwgfx Warning
